@@ -1,0 +1,107 @@
+name: 'Manjaro Package CI'
+
+on: [push]
+  
+jobs:
+  build_package:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:  
+        PACKAGE: [htop-rc]
+        REPO: [pheiduck]
+    steps:
+      - id: install_build-dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install \
+          build-essential \
+          cmake \
+          fakeroot \
+          git \
+          libarchive-dev \
+          libarchive-tools \
+          libcurl4-openssl-dev \
+          libgpgme-dev \
+          libssl-dev \
+          zip \
+          python3-pip
+          sudo pip3 install meson
+          sudo pip3 install ninja
+      - id: install_pacman
+        env:
+          PACMAN_VERSION: 6.0.0
+        run: |
+          sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/pacman.git
+          pushd pacman
+          sudo wget https://sources.archlinux.org/other/pacman/pacman-${PACMAN_VERSION}.tar.xz
+          sudo tar -xvf pacman-${PACMAN_VERSION}.tar.xz
+          pushd pacman-${PACMAN_VERSION}
+          sudo patch -p1 -i ../pacman-sync-first-option.patch
+          sudo meson --prefix=/usr \
+                      --buildtype=plain \
+                      -Ddoc=disabled \
+                      -Ddoxygen=enabled \
+                      -Dscriptlet-shell=/usr/bin/bash \
+                      -Dldconfig=/usr/bin/ldconfig \
+                      build
+          sudo meson compile -C build
+          sudo meson install -C build
+          popd
+          sudo install -m644 pacman.conf /etc/pacman.conf
+          sudo install -m644 makepkg.conf /etc/
+          sudo mkdir -p /etc/pacman.d
+          sudo touch /etc/pacman.d/mirrorlist
+          popd
+      - id: install_keyrings
+        run: |
+          sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/manjaro-keyring.git
+          pushd manjaro-keyring
+          sudo install -dm755 /usr/share/pacman/keyrings/
+          sudo install -m0644 manjaro.gpg /usr/share/pacman/keyrings/
+          sudo install -m0644 manjaro-trusted /usr/share/pacman/keyrings/
+          sudo install -m0644 manjaro-trusted /usr/share/pacman/keyrings/
+          popd
+          
+          sudo git clone --depth 1 https://gitlab.archlinux.org/archlinux/archlinux-keyring.git
+          pushd archlinux-keyring
+          sudo install -m0644 archlinux.gpg /usr/share/pacman/keyrings/
+          sudo install -m0644 archlinux-trusted /usr/share/pacman/keyrings/
+          sudo install -m0644 archlinux-revoked /usr/share/pacman/keyrings/
+          popd
+          sudo pacman-key --init
+          sudo pacman-key --populate archlinux manjaro
+      - id: install_manjaro-chrootbuild
+        run: |
+          sudo git clone --depth 1 https://gitlab.manjaro.org/tools/development-tools/manjaro-chrootbuild
+          pushd manjaro-chrootbuild
+          sudo ./install.sh "PACKAGER = pheiduck <pheiduck@github.com>"
+          popd
+      - id: clone_repo
+        env:
+          PACKAGE: htop-rc
+          REPO: pheiduck
+        run: |
+          sudo git clone https://github.com/${{ matrix.repo }}/${{ matrix.package }}.git
+      - id: build_package
+        run: |
+          sudo chrootbuild -p ${{ matrix.package }}
+      - id: publish_package
+        shell: bash -O extglob {0}
+        run: |
+          _ver=$(grep ^pkgver= ${{ matrix.package }}/PKGBUILD | cut -d'=' -f2)
+          _rel=$(grep ^pkgrel= ${{ matrix.package }}/PKGBUILD | cut -d'=' -f2)
+          _tag=${_ver}-${_rel}
+          echo ${{ github.token }} | gh auth login --with-token
+          gh release create ${_tag} --title ${_tag} --repo ${{ github.repository }} --notes "automated release" || echo "release already exists"
+          GITHUB_LINK=https://github.com/${GITHUB_REPOSITORY}/releases/download/${_tag}
+          gh release upload ${_tag} --repo ${GITHUB_REPOSITORY} --clobber ./*.zst
+      - name: Cleanup Releases
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          ###### EDIT HERE ######
+          repo: pheiduck/htop-rc
+          #######################
+          keep_latest: 1
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
