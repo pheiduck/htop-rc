@@ -20,7 +20,7 @@ optdepends=('lm_sensors: show cpu temperatures'
             'strace: attach to a running process')
 options=('!emptydirs')
 source=("https://github.com/htop-dev/htop/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('4c2629bd50895bd24082ba2f81f8c972348aa2298cc6edc6a21a7fa18b73990c')
+sha256sums=('SKIP')
 
 prepare() {
   cd "$pkgname-$pkgver"
