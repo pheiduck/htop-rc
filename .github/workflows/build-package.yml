@@ -12,8 +12,9 @@ jobs:
     steps:
       - id: install_build-dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install \
+          sudo apt update
+          sudo apt dist-upgrade -y
+          sudo apt install \
           build-essential \
           cmake \
           fakeroot \
@@ -29,7 +30,7 @@ jobs:
           sudo pip3 install ninja
       - id: install_pacman
         env:
-          PACMAN_VERSION: 6.0.0
+          PACMAN_VERSION: 6.0.1
         run: |
           sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/pacman.git
           pushd pacman
