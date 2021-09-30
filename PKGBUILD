@@ -14,23 +14,25 @@ arch=('x86_64')
 url='https://htop.dev/'
 _commit=d23627fda9878f0a8640c24d95145d56882ba503
 license=('GPL')
-depends=('ncurses' 'libncursesw.so' 'libnl')
+depends=('libcap' 'libcap.so' 'libnl' 'ncurses' 'libncursesw.so')
 makedepends=('git' 'lm_sensors')
 optdepends=('lm_sensors: show cpu temperatures'
             'lsof: show files opened by a process'
             'strace: attach to a running process')
 options=('!emptydirs')
+validpgpkeys=('F7ABE8761E6FE68638E6283AFE0842EE36DD8C0C') # Nathan Scott <nathans@debian.org>
 source=("git+https://github.com/htop-dev/htop.git#commit=$_commit")
 sha256sums=('SKIP')
 
+
 prepare() {
-  cd "$pkgname"
+  cd "${pkgname}"
 
   autoreconf -fi
 }
 
 build() {
-  cd "$pkgname"
+  cd "${pkgname}"
 
   ./configure \
       --prefix=/usr \
@@ -45,5 +47,7 @@ build() {
 }
 
 package() {
-  make -C "$pkgname" DESTDIR="$pkgdir" install
+  cd "${pkgname}"
+
+  make DESTDIR="${pkgdir}" install
 }
