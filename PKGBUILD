@@ -7,11 +7,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=htop
-pkgver=3.1.0rc3
+pkgver=3.1.1
 pkgrel=1
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
+_commit=d23627fda9878f0a8640c24d95145d56882ba503
 license=('GPL')
 depends=('ncurses' 'libncursesw.so' 'libnl')
 makedepends=('lm_sensors')
@@ -19,17 +20,17 @@ optdepends=('lm_sensors: show cpu temperatures'
             'lsof: show files opened by a process'
             'strace: attach to a running process')
 options=('!emptydirs')
-source=("https://github.com/htop-dev/htop/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("git+https://github.com/htop-dev/htop.git#commit=$_commit")
 sha256sums=('SKIP')
 
 prepare() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname"
 
   autoreconf -fi
 }
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname"
 
   ./configure \
       --prefix=/usr \
@@ -44,5 +45,5 @@ build() {
 }
 
 package() {
-  make -C "$pkgname-$pkgver" DESTDIR="$pkgdir" install
+  make -C "$pkgname" DESTDIR="$pkgdir" install
 }
