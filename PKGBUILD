@@ -15,7 +15,7 @@ url='https://htop.dev/'
 _commit=d23627fda9878f0a8640c24d95145d56882ba503
 license=('GPL')
 depends=('ncurses' 'libncursesw.so' 'libnl')
-makedepends=('lm_sensors')
+makedepends=('git' 'lm_sensors')
 optdepends=('lm_sensors: show cpu temperatures'
             'lsof: show files opened by a process'
             'strace: attach to a running process')
