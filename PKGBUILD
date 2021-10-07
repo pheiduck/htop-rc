@@ -7,12 +7,12 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=htop
-pkgver=3.1.1rc0
+pkgver=3.1.1.40
 pkgrel=1
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
-_commit=74afca7bc10ece0964720be0b59c8353e66e2576
+_commit=b7248f6cb82350b683adf42d0fd4ec917397ea05
 license=('GPL')
 depends=('libcap' 'libcap.so' 'libnl' 'ncurses' 'libncursesw.so')
 makedepends=('git' 'lm_sensors')
