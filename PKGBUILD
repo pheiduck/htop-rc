@@ -7,8 +7,8 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=htop
-pkgver=3.2.0-dev
-pkgrel=1
+pkgver=3.2.0
+pkgrel=2
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
