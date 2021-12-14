@@ -8,11 +8,11 @@
 
 pkgname=htop
 pkgver=3.2.0
-pkgrel=6
+pkgrel=7
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
-_commit=bc08c7dc2aa933385fb35df9f81ba06b111ac0c6
+_commit=b45eaf2fe16fb0e94333ab848962892b48648a28
 license=('GPL')
 depends=('libcap' 'libcap.so' 'libnl' 'ncurses' 'libncursesw.so')
 makedepends=('git' 'lm_sensors')
