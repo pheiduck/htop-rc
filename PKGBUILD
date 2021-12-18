@@ -8,11 +8,11 @@
 
 pkgname=htop
 pkgver=3.2.0
-pkgrel=8
+pkgrel=9
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
-_commit=5b78ad2d53b751e8b07d67ab8070e47f77036b84
+_branch=main
 license=('GPL')
 depends=('libcap' 'libcap.so' 'libnl' 'ncurses' 'libncursesw.so')
 makedepends=('git' 'lm_sensors')
@@ -21,7 +21,7 @@ optdepends=('lm_sensors: show cpu temperatures'
             'strace: attach to a running process')
 options=('!emptydirs')
 validpgpkeys=('F7ABE8761E6FE68638E6283AFE0842EE36DD8C0C') # Nathan Scott <nathans@debian.org>
-source=("git+https://github.com/$pkgname-dev/$pkgname.git#commit=$_commit")
+source=("git+https://github.com/$pkgname-dev/$pkgname.git#branch=$_branch")
 sha256sums=('SKIP')
 
 prepare() {
