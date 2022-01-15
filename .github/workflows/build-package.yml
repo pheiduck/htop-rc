@@ -25,7 +25,8 @@ jobs:
           libgpgme-dev \
           libssl-dev \
           zip \
-          python3-pip
+          python3-pip \
+          zstd
           sudo pip3 install meson
           sudo pip3 install ninja
       - id: install_pacman
@@ -55,16 +56,18 @@ jobs:
           popd
       - id: install_keyrings
         run: |
+          sudo install -dm755 /usr/share/pacman/keyrings/
           sudo git clone --depth 1 https://gitlab.manjaro.org/packages/core/manjaro-keyring.git
           pushd manjaro-keyring
-          sudo install -dm755 /usr/share/pacman/keyrings/
           sudo install -m0644 manjaro.gpg /usr/share/pacman/keyrings/
           sudo install -m0644 manjaro-trusted /usr/share/pacman/keyrings/
           sudo install -m0644 manjaro-trusted /usr/share/pacman/keyrings/
           popd
           
-          sudo git clone --depth 1 https://gitlab.archlinux.org/archlinux/archlinux-keyring.git
+          mkdir -p archlinux-keyring
           pushd archlinux-keyring
+          wget https://archlinux.org/packages/core/any/archlinux-keyring/download -O /tmp/archlinux-keyring.tar.zst
+          tar --use-compress-program=unzstd --strip-components=4 --wildcards -xvf /tmp/archlinux-keyring.tar.zst usr/share/pacman/keyrings/*
           sudo install -m0644 archlinux.gpg /usr/share/pacman/keyrings/
           sudo install -m0644 archlinux-trusted /usr/share/pacman/keyrings/
           sudo install -m0644 archlinux-revoked /usr/share/pacman/keyrings/
