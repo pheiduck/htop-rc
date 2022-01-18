@@ -8,7 +8,7 @@
 
 pkgname=htop
 pkgver=3.2.0
-pkgrel=12
+pkgrel=13
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
