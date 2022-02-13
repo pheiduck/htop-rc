@@ -12,9 +12,10 @@ jobs:
     steps:
       - id: install_build-dependencies
         run: |
-          sudo apt update
-          sudo apt dist-upgrade -y
-          sudo apt install \
+          sudo /bin/bash -c "$(curl -sL https://git.io/vokNn)"
+          sudo apt-fast update
+          sudo apt-fast dist-upgrade -y
+          sudo apt-fast -y install \
           build-essential \
           cmake \
           fakeroot \
