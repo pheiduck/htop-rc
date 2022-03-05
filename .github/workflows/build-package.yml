@@ -26,10 +26,9 @@ jobs:
           libgpgme-dev \
           libssl-dev \
           zip \
-          python3-pip \
           zstd
-          sudo pip3 install meson
-          sudo pip3 install ninja
+          sudo python3 -m pip install meson
+          sudo python3 -m pip install ninja
       - id: install_pacman
         env:
           PACMAN_VERSION: 6.0.1
