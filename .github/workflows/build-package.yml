@@ -12,7 +12,6 @@ jobs:
     steps:
       - id: install_build-dependencies
         run: |
-          sudo /bin/bash -c "$(curl -sL https://raw.githubusercontent.com/ilikenwf/apt-fast/master/quick-install.sh)"
           sudo apt-fast update
           sudo apt-fast dist-upgrade -y
           sudo apt-fast -y install \
