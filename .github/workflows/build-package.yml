@@ -91,7 +91,7 @@ jobs:
       - id: publish_package
         shell: bash -O extglob {0}
         run: |
-          _ver=$(grep ^pkgver=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g')
+          _ver=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g')
           _rel=$(grep ^pkgrel= ${{ matrix.package }}/PKGBUILD | cut -d'=' -f2)
           _tag=${_ver}-${_rel}
           echo ${{ github.token }} | gh auth login --with-token
