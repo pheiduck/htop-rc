@@ -8,7 +8,7 @@
 
 pkgname=htop
 pkgver=3.2.1
-pkgrel=20
+pkgrel=2
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
 url='https://htop.dev/'
@@ -26,7 +26,7 @@ sha256sums=('SKIP')
 
 prepare() {
   cd "${pkgname}"
-
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
   autoreconf -fi
 }
 
