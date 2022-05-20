@@ -24,9 +24,13 @@ validpgpkeys=('F7ABE8761E6FE68638E6283AFE0842EE36DD8C0C') # Nathan Scott <nathan
 source=("git+https://github.com/$pkgname-dev/$pkgname.git#branch=$_branch")
 sha256sums=('SKIP')
 
-prepare() {
+pkgver() {
   cd "${pkgname}"
   git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd "${pkgname}"
   autoreconf -fi
 }
 
