@@ -7,7 +7,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=htop
-pkgver=3.2.1
+pkgver=3.2.0.r24.g3d8fa0b9
 pkgrel=2
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
