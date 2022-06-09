@@ -7,7 +7,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=htop
-pkgver=3.2.0.r25.ge053446c
+pkgver=3.2.1.r1.g611ea460
 pkgrel=1
 pkgdesc='Interactive process viewer'
 arch=('x86_64')
@@ -47,6 +47,11 @@ build() {
       --enable-vserver
 
   make
+}
+
+check() {
+  cd "${pkgname}"
+  make -j1 test
 }
 
 package() {
