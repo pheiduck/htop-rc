@@ -51,7 +51,7 @@ build() {
 
 check() {
   cd "${pkgname}"
-  make -j1 test
+  make distcheck
 }
 
 package() {
